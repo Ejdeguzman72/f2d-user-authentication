@@ -1,14 +1,17 @@
 package com.f2d.user_authentication.controller;
 
-import com.f2d.user_authentication.domain.F2DUser;
-import com.f2d.user_authentication.domain.UriConstants;
-import com.f2d.user_authentication.domain.UserListResponse;
-import com.f2d.user_authentication.domain.UserSearchResponse;
+import com.f2d.user_authentication.config.JwtUtil;
+import com.f2d.user_authentication.domain.*;
 import com.f2d.user_authentication.service.F2DUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +20,14 @@ public class UserController {
 
     @Autowired
     private F2DUserService f2DUserService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @GetMapping(value = UriConstants.GET_ALL_USERS)
     public UserListResponse retrieveAllUsers() {
@@ -26,5 +37,26 @@ public class UserController {
     @GetMapping(value = UriConstants.GET_USER_BY_ID)
     public UserSearchResponse retrieveUserById(@PathVariable long userId) {
         return f2DUserService.retrieveUserById(userId);
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or password", e);
+        }
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<F2DUser> registerUser(@RequestBody RegisterRequest request) {
+        return f2DUserService.registerNewF2DUser(request);
     }
 }
