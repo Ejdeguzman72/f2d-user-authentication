@@ -2,10 +2,13 @@ package com.f2d.user_authentication.domain;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +30,15 @@ public class F2DUser implements UserDetails {
     private LocalDate creationDate;
     private LocalDate lastUpdatetime;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>(); // Initialize to avoid null pointer exceptions
+
+    // Getters and setters
     public long getUserId() {
         return userId;
     }
@@ -55,8 +67,11 @@ public class F2DUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Return user authorities here
-        return null; // Update according to your needs
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        }
+        return authorities;
     }
 
     @Override
@@ -117,5 +132,13 @@ public class F2DUser implements UserDetails {
 
     public void setLastUpdatetime(LocalDate lastUpdatetime) {
         this.lastUpdatetime = lastUpdatetime;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

@@ -59,4 +59,9 @@ public class UserController {
     public ResponseEntity<F2DUser> registerUser(@RequestBody RegisterRequest request) {
         return f2DUserService.registerNewF2DUser(request);
     }
+
+    @DeleteMapping(value = UriConstants.DELETE_USER_BBY_ID)
+    public UserSearchResponse deleteUserById(@PathVariable long userId) {
+        return f2DUserService.deleteUserById(userId);
+    }
 }

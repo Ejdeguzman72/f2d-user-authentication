@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class F2DUserService {
@@ -39,9 +40,23 @@ public class F2DUserService {
         F2DUser user = new F2DUser();
         user.setUsername(request.getUsername());
         user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword())); // Encrypt password
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
+        user.setEmail(request.getEmail());
         user.setCreationDate(LocalDate.now());
         user.setLastUpdatetime(LocalDate.now());
         f2dUserRepository.save(user);
         return ResponseEntity.ok(user);
+    }
+
+    public UserSearchResponse deleteUserById(long userId) {
+        UserSearchResponse response = new UserSearchResponse();
+        F2DUser user = f2DUserRepository.findById(userId).orElseGet(F2DUser::new);
+        if (Objects.nonNull(user)) {
+            f2DUserRepository.deleteById(userId);
+        }
+
+        response.setUser(user);
+        return response;
     }
 }
