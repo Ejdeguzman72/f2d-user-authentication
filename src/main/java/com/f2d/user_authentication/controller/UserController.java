@@ -39,6 +39,11 @@ public class UserController {
         return f2DUserService.retrieveUserById(userId);
     }
 
+    @GetMapping(value = UriConstants.GET_USER_BY_USERNAME)
+    public UserSearchResponse retrieveUserByUsername(@PathVariable String username) {
+        return f2DUserService.retrieveUserByUsername(username);
+    }
+
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {

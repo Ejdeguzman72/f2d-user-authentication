@@ -36,6 +36,13 @@ public class F2DUserService {
         return response;
     }
 
+    public UserSearchResponse retrieveUserByUsername(String username) {
+        UserSearchResponse response = new UserSearchResponse();
+        F2DUser user = f2dUserRepository.findByUsername(username);
+        response.setUser(user);
+        return response;
+    }
+
     public ResponseEntity<F2DUser> registerNewF2DUser(RegisterRequest request) {
         F2DUser user = new F2DUser();
         user.setUsername(request.getUsername());

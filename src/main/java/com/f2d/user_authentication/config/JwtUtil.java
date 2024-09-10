@@ -19,7 +19,7 @@ public class JwtUtil {
     private final String SECRET_KEY = "f2d_secret_key";
 
 //    @Value("${jwt.expiration}")
-    private long EXPIRATION_TIME = 10000;
+    private long EXPIRATION_TIME = 1000000000;
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
