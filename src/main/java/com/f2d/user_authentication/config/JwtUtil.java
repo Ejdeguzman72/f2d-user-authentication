@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +17,10 @@ import java.util.function.Function;
 public class JwtUtil {
 
 //    @Value("${jwt.secret}")
-    private final String SECRET_KEY = "f2d_secret_key";
+private final String SECRET_KEY = "ejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
 
 //    @Value("${jwt.expiration}")
-    private long EXPIRATION_TIME = 1000000000;
+    private long EXPIRATION_TIME = 500000;
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
