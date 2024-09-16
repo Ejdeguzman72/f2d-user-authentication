@@ -50,23 +50,23 @@ public class UserController {
         return f2DUserService.registerNewF2DUser(request);
     }
 
-//    @GetMapping(value = UriConstants.GET_ALL_USERS)
-//    public UserListResponse retrieveAllUsers() {
-//        return f2DUserService.retrieveAllUsers();
-//    }
-//
-//    @GetMapping(value = UriConstants.GET_USER_BY_ID)
-//    public UserSearchResponse retrieveUserById(@PathVariable long userId) {
-//        return f2DUserService.retrieveUserById(userId);
-//    }
-//
-//    @GetMapping(value = UriConstants.GET_USER_BY_USERNAME)
-//    public UserSearchResponse retrieveUserByUsername(@PathVariable String username) {
-//        return f2DUserService.retrieveUserByUsername(username);
-//    }
+    @GetMapping(value = UriConstants.GET_ALL_USERS)
+    public UserListResponse retrieveAllUsers() {
+        return f2DUserService.retrieveAllUsers();
+    }
 
-//    @DeleteMapping(value = UriConstants.DELETE_USER_BBY_ID)
-//    public UserSearchResponse deleteUserById(@PathVariable long userId) {
-//        return f2DUserService.deleteUserById(userId);
-//    }
+    @GetMapping(value = UriConstants.GET_USER_BY_ID)
+    public UserSearchResponse retrieveUserById(@PathVariable long userId) {
+        return f2DUserService.retrieveUserById(userId);
+    }
+
+    @GetMapping(value = UriConstants.GET_USER_BY_USERNAME)
+    public UserSearchResponse retrieveUserByUsername(@PathVariable String username) {
+        return f2DUserService.retrieveUserByUsername(username);
+    }
+
+    @DeleteMapping(value = UriConstants.DELETE_USER_BBY_ID)
+    public UserSearchResponse deleteUserById(@PathVariable long userId) {
+        return f2DUserService.deleteUserById(userId);
+    }
 }
