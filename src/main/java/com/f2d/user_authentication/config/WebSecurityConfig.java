@@ -1,5 +1,6 @@
 package com.f2d.user_authentication.config;
 
+import com.f2d.user_authentication.domain.UriConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Use the lambda style without AbstractHttpConfigurer
                 .authorizeHttpRequests(auth -> auth // Lambda style for authorizing HTTP requests
-                        .requestMatchers("/auth/**").permitAll() // Permit access to the authentication endpoint
+                        .requestMatchers(UriConstants.AUTHORIZED_REQUESTS_PATH).permitAll() // Permit access to the authentication endpoint
                         .anyRequest().authenticated() // All other requests require authentication
                 )
                 .sessionManagement(session -> session

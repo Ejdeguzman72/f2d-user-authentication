@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AppConfigurationEntry;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class UserController {
 
     @Autowired
     private UserDetailsService userDetailsService;
-    @PostMapping("/auth/authenticate")
+    @PostMapping(UriConstants.USER_AUTHENTICATE_URI)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -44,7 +45,7 @@ public class UserController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping(UriConstants.USER_REGISTER_URI)
     public ResponseEntity<F2DUser> registerUser(@RequestBody RegisterRequest request) {
         return f2DUserService.registerNewF2DUser(request);
     }

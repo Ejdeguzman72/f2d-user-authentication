@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = AppConstants.USERS_TABLE_NAME)
 public class F2DUser implements UserDetails {
 
     @Id

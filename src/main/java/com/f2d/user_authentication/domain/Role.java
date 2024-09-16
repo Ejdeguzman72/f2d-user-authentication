@@ -3,7 +3,7 @@ package com.f2d.user_authentication.domain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "role")
+@Table(name = AppConstants.ROLE_TABLE_NAME)
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
