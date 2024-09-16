@@ -28,23 +28,7 @@ public class UserController {
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-    @GetMapping(value = UriConstants.GET_ALL_USERS)
-    public UserListResponse retrieveAllUsers() {
-        return f2DUserService.retrieveAllUsers();
-    }
-
-    @GetMapping(value = UriConstants.GET_USER_BY_ID)
-    public UserSearchResponse retrieveUserById(@PathVariable long userId) {
-        return f2DUserService.retrieveUserById(userId);
-    }
-
-    @GetMapping(value = UriConstants.GET_USER_BY_USERNAME)
-    public UserSearchResponse retrieveUserByUsername(@PathVariable String username) {
-        return f2DUserService.retrieveUserByUsername(username);
-    }
-
-    @PostMapping("/authenticate")
+    @PostMapping("/auth/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -60,13 +44,28 @@ public class UserController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<F2DUser> registerUser(@RequestBody RegisterRequest request) {
         return f2DUserService.registerNewF2DUser(request);
     }
 
-    @DeleteMapping(value = UriConstants.DELETE_USER_BBY_ID)
-    public UserSearchResponse deleteUserById(@PathVariable long userId) {
-        return f2DUserService.deleteUserById(userId);
-    }
+//    @GetMapping(value = UriConstants.GET_ALL_USERS)
+//    public UserListResponse retrieveAllUsers() {
+//        return f2DUserService.retrieveAllUsers();
+//    }
+//
+//    @GetMapping(value = UriConstants.GET_USER_BY_ID)
+//    public UserSearchResponse retrieveUserById(@PathVariable long userId) {
+//        return f2DUserService.retrieveUserById(userId);
+//    }
+//
+//    @GetMapping(value = UriConstants.GET_USER_BY_USERNAME)
+//    public UserSearchResponse retrieveUserByUsername(@PathVariable String username) {
+//        return f2DUserService.retrieveUserByUsername(username);
+//    }
+
+//    @DeleteMapping(value = UriConstants.DELETE_USER_BBY_ID)
+//    public UserSearchResponse deleteUserById(@PathVariable long userId) {
+//        return f2DUserService.deleteUserById(userId);
+//    }
 }
