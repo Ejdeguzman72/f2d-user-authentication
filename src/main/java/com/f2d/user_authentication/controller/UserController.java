@@ -17,6 +17,7 @@ import javax.security.auth.login.AppConfigurationEntry;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -30,6 +31,7 @@ public class UserController {
     @Autowired
     private UserDetailsService userDetailsService;
     @PostMapping(UriConstants.USER_AUTHENTICATE_URI)
+    @CrossOrigin
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -46,26 +48,31 @@ public class UserController {
     }
 
     @PostMapping(UriConstants.USER_REGISTER_URI)
+    @CrossOrigin
     public ResponseEntity<F2DUser> registerUser(@RequestBody RegisterRequest request) {
         return f2DUserService.registerNewF2DUser(request);
     }
 
     @GetMapping(value = UriConstants.GET_ALL_USERS)
+    @CrossOrigin
     public UserListResponse retrieveAllUsers() {
         return f2DUserService.retrieveAllUsers();
     }
 
     @GetMapping(value = UriConstants.GET_USER_BY_ID)
+    @CrossOrigin
     public UserSearchResponse retrieveUserById(@PathVariable long userId) {
         return f2DUserService.retrieveUserById(userId);
     }
 
     @GetMapping(value = UriConstants.GET_USER_BY_USERNAME)
+    @CrossOrigin
     public UserSearchResponse retrieveUserByUsername(@PathVariable String username) {
         return f2DUserService.retrieveUserByUsername(username);
     }
 
     @DeleteMapping(value = UriConstants.DELETE_USER_BBY_ID)
+    @CrossOrigin
     public UserSearchResponse deleteUserById(@PathVariable long userId) {
         return f2DUserService.deleteUserById(userId);
     }
