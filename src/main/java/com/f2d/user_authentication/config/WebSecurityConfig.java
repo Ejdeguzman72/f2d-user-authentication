@@ -31,16 +31,16 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))// Use the lambda style without AbstractHttpConfigurer
-                .authorizeHttpRequests(auth -> auth // Lambda style for authorizing HTTP requests
-                        .requestMatchers(UriConstants.AUTHORIZED_REQUESTS_PATH).permitAll() // Permit access to the authentication endpoint
-                        .anyRequest().authenticated() // All other requests require authentication
+                .csrf(csrf -> csrf.disable())  // Disable CSRF protection for stateless authentication
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply the custom CORS configuration
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(UriConstants.AUTHORIZED_REQUESTS_PATH).permitAll()  // Allow unauthenticated access to specific paths like '/auth/authenticate'
+                        .anyRequest().authenticated()  // Require authentication for all other requests
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Set session management to stateless
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Stateless session management (no sessions)
                 )
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT token filter
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT token filter before authentication filter
 
         return http.build();
     }
@@ -48,23 +48,23 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // Specify allowed origins
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Specify allowed methods
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Specify allowed headers
-        configuration.setAllowCredentials(true); // Allow credentials if needed
+        configuration.addAllowedOriginPattern("*"); // Allow all origins (use specific origins in production for security)
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));  // Allowed HTTP methods
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));  // Allow Authorization and Content-Type headers
+        configuration.setAllowCredentials(true);  // Allow cookies/credentials to be included in the request
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Apply the CORS configuration to all endpoints
+        source.registerCorsConfiguration("/**", configuration);  // Apply the CORS configuration to all endpoints
         return source;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager();  // Return the AuthenticationManager bean
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();  // Provide a password encoder for BCrypt hashing
     }
 }
