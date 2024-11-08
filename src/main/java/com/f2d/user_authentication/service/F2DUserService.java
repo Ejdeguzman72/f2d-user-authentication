@@ -59,6 +59,8 @@ public class F2DUserService {
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setEmail(request.getEmail());
+        user.setDescription(request.getDescription());
+        user.setInterests(request.getInterests());
         user.setCreationDate(LocalDate.now());
         user.setLastUpdatetime(LocalDate.now());
         f2dUserRepository.save(user);

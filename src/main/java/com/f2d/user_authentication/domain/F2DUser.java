@@ -17,16 +17,15 @@ public class F2DUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
-
     @Column(nullable = false, unique = true)
     private String username;
-
     @Column(nullable = false)
     private String password;
-
     private String email;
     private String firstname;
     private String lastname;
+    private String description;
+    private List<String> interests;
     private LocalDate creationDate;
     private LocalDate lastUpdatetime;
 
@@ -140,5 +139,21 @@ public class F2DUser implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
     }
 }

@@ -1,11 +1,15 @@
 package com.f2d.user_authentication.domain;
 
+import java.util.List;
+
 public class RegisterRequest {
     String username;
     String password;
     String firstname;
     String lastname;
     String email;
+    private String description;
+    private List<String> interests;
 
     public String getUsername() {
         return username;
@@ -45,5 +49,21 @@ public class RegisterRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
     }
 }
