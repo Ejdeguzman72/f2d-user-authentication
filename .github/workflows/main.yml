@@ -26,6 +26,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}:22
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
+          timeout: 300  # Set the timeout to 300 seconds (5 minutes)
           script: |
             echo "${{ secrets.SERVER_IP }}:22"
             echo "Running Build and Test on Server"
