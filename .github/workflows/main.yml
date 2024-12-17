@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # checkout code
+      # Checkout code
       - name: Checkout User Authentication Repo
         uses: actions/checkout@v3
 
@@ -20,10 +20,24 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build And Test
-        run: | 
-          mvn clean package
-          mvn test
+      - name: Build and Test with SSH pre-check
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            echo "Running Build and Test on Server"
+            
+            # Navigate to the project directory
+            cd /home/ej/F2D/f2d-user-authentication
+            
+            # Pull the latest code
+            git pull origin master
+            
+            # Ensure correct JDK is in place
+            mvn clean package
+            mvn test
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -35,22 +49,28 @@ jobs:
         run: | 
           docker build -t ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via ssh
+      - name: SSH into server and deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            echo "Deploying F2D User Authentication Service"
+
+            # Ensure the latest code is pulled
+            cd /home/ej/F2D/f2d-user-authentication
+            git pull origin master
+
+            # Build and deploy application
+            mvn clean package
             docker stop f2d-user-authentication || true
             docker rm f2d-user-authentication || true
-            docker pull ${{ secrets.DOCKER_USERNAME}}/f2d-user-authentication:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
             docker run -d --name f2d-user-authentication -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
-        
-    
-
