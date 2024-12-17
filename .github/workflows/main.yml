@@ -22,7 +22,7 @@ jobs:
 
       - name: Build And Test
         run: | 
-          mvn clean install
+          mvn clean package
           mvn test
 
       - name: Login to Docker Hub
