@@ -16,9 +16,18 @@ jobs:
 
       # Run Maven commands
       - name: Run Maven Commands
-        run: |
-          echo "Navigating to project directory"
-          cd /home/ej/F2D/f2d-user-authentication
+        uses: appleboy/ssh-action@master
+        with:
+          host: 192.168.1.54
+          username: ej
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+          script: |
+            echo "Navigating to project directory"
+            cd /home/ej/F2D/f2d-user-authentication
 
-          echo "Cleaning project"
-          mvn clean
+            echo "Cleaning project"
+            mvn clean
+
+            echo "Building project"
+            mvn package
