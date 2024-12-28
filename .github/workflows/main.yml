@@ -1,4 +1,4 @@
-name: F2D User Authentication
+name: Run Maven on Raspberry Pi
 
 on:
   push:
@@ -11,59 +11,20 @@ jobs:
 
     steps:
       # Checkout code
-      - name: Checkout User Authentication Repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Set up Java 17
-      - name: Set Up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      # Build and Test
-      - name: Build and Test
-        run: |
-          mvn clean package
-          mvn test
-
-      # Login to Docker Hub
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # Build and Push Docker Image
-      - name: Build and Push Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      # SSH into the server and deploy
-      - name: SSH into server and deploy
+      # SSH into Raspberry Pi to run Maven commands
+      - name: Run Maven Commands on Raspberry Pi
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          host: ${{ secrets.RASPBERRY_PI_IP }}
+          username: ${{ secrets.RASPBERRY_PI_USER }}
+          password: ${{ secrets.RASPBERRY_PI_PASSWORD }}
+          port: 22
           script: |
-            echo "Deploying F2D User Authentication Service"
-
-            # Navigate to the project directory
+            echo "Navigating to project directory on Raspberry Pi"
             cd /home/ej/F2D/f2d-user-authentication
 
-            # Stop and remove the current container
-            docker stop f2d-user-authentication || true
-            docker rm f2d-user-authentication || true
-
-            # Pull the latest Docker image
-            docker pull ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
-
-            # Run the updated container
-            docker run -d --name f2d-user-authentication -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/f2d-user-authentication:latest
+            echo "Cleaning project"
+            mvn clean
