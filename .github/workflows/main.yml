@@ -22,6 +22,3 @@ jobs:
 
           echo "Cleaning project"
           mvn clean
-
-          echo "Building project"
-          mvn package
