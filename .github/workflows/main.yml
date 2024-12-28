@@ -24,13 +24,11 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: 192.168.1.54
-          port: 2222
+          port: 22
           username: ej
           password: password
           timeout: 5m
           script: |
-            echo "${{ secrets.SERVER_IP }}:22"
-            echo "Running Build and Test on Server"
             
             # Navigate to the project directory
             cd /home/ej/F2D/f2d-user-authentication
