@@ -7,24 +7,21 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Use the self-hosted runner on Raspberry Pi
 
     steps:
       # Checkout code
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # SSH into Raspberry Pi to run Maven commands
-      - name: Run Maven Commands on Raspberry Pi
-        uses: appleboy/ssh-action@master
-        with:
-          host: 192.168.1.54
-          username: ej
-          password: password
-          port: 22
-          script: |
-            echo "Navigating to project directory on Raspberry Pi"
-            cd /home/ej/F2D/f2d-user-authentication
+      # Run Maven commands
+      - name: Run Maven Commands
+        run: |
+          echo "Navigating to project directory"
+          cd /home/ej/F2D/f2d-user-authentication
 
-            echo "Cleaning project"
-            mvn clean
+          echo "Cleaning project"
+          mvn clean
+
+          echo "Building project"
+          mvn package
