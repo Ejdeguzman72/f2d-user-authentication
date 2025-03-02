@@ -18,14 +18,13 @@ public class JwtUtil {
 
     private final String SECRET_KEY = "POOIRBCVIAUJERGKLBVSDLBVAKWIEWOIEOHGJKLBVLSBVLSADOWOIGHKLHGKLSDHJFKLSDFI";
 
-    private long EXPIRATION_TIME = 500000000;
-
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
+        long EXPIRATION_TIME = 500000000;
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
