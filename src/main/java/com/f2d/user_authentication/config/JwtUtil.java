@@ -16,10 +16,8 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-//    @Value("${jwt.secret}")
-private final String SECRET_KEY = "POOIRBCVIAUJERGKLBVSDLBVAKWIEWOIEOHGJKLBVLSBVLSADOWOIGHKLHGKLSDHJFKLSDFI";
+    private final String SECRET_KEY = "POOIRBCVIAUJERGKLBVSDLBVAKWIEWOIEOHGJKLBVLSBVLSADOWOIGHKLHGKLSDHJFKLSDFI";
 
-//    @Value("${jwt.expiration}")
     private long EXPIRATION_TIME = 500000000;
 
     public String generateToken(String username) {
