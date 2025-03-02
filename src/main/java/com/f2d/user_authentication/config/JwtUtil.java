@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
+import io.jsonwebtoken.security.Keys;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +17,10 @@ import java.util.function.Function;
 public class JwtUtil {
 
 //    @Value("${jwt.secret}")
-private final String SECRET_KEY = "ejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
+private final String SECRET_KEY = "POOIRBCVIAUJERGKLBVSDLBVAKWIEWOIEOHGJKLBVLSBVLSADOWOIGHKLHGKLSDHJFKLSDFI";
 
 //    @Value("${jwt.expiration}")
-    private long EXPIRATION_TIME = 500000;
+    private long EXPIRATION_TIME = 500000000;
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -33,7 +33,7 @@ private final String SECRET_KEY = "ejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
