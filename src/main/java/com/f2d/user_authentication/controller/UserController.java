@@ -76,4 +76,10 @@ public class UserController {
     public UserSearchResponse deleteUserById(@PathVariable long userId) {
         return f2DUserService.deleteUserById(userId);
     }
+
+    @GetMapping("/users/user-info")
+    public ResponseEntity<String> getUserInfo(@RequestHeader("X-User-Name") String username) {
+        // Use the username for your logic
+        return ResponseEntity.ok("Username: " + username);
+    }
 }
