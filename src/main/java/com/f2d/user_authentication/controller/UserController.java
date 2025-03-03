@@ -77,7 +77,7 @@ public class UserController {
         return f2DUserService.deleteUserById(userId);
     }
 
-    @GetMapping("/users/user-info")
+    @GetMapping(value = UriConstants.RETRIEVE_USERNAME)
     public ResponseEntity<String> getUserInfo(@RequestHeader("X-User-Name") String username) {
         // Use the username for your logic
         return ResponseEntity.ok("Username: " + username);
